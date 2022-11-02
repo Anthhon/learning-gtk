@@ -14,28 +14,32 @@ activate (GtkApplication* app, gpointer user_data){
     // A GtkWidget is declared to accomplish each feature
     GtkWidget *window;
     GtkWidget *button;
+    GtkWidget *button_box;
     
     window = gtk_application_window_new (app);
     // Define some of the window attributes
     gtk_window_set_title (GTK_WINDOW (window), "Learning GTK 4.0");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 400);
     
+    button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    gtk_container_add (GTK_CONTAINER (window), button_box);
+
     // Returns a GtkButton which is stored in 'button' variable
     button = gtk_button_new_with_label ("I'm a button");
     // Add the button to the widget
     // Connect the button to a CALLBACK function "print_hello" which has any DATA input, so we got a NULL value
     g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+    g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), window);
+    gtk_container_add (GTK_CONTAINER (button_box), button);
+    // gtk_window_set_child (GTK_WINDOW (window), button);
     
-    gtk_window_set_child (GTK_WINDOW (window), button);
-    
-    // Shows the window
-    gtk_widget_show (window);
+    // Shows the windowclear
+    gtk_widget_show_all (window);
 }
 
 // Create the Gtk Application object and run it
 int main (int argc, char **argv){
-
-
+    
     GtkApplication *app;
     int status;
 
